@@ -11,9 +11,14 @@ else:
 
 print("Convert images in directory to PDF.")
 print("The subdirectories in this folder:")
-print(next(os.walk("."))[1])
+subs = next(os.walk("."))[1]
+print(subs)
 
 path = input("Enter name of the directory with the images (png or jpg format):")
+if path == "":
+    raise ValueError("You must enter a valid directory name")
+if path not in subs:
+    raise ValueError("You must enter a directory in the same directory we are in.")
 
 file_name = input(f"enter pdf file name(default {path}.pdf):")
 if file_name == "":
@@ -31,20 +36,19 @@ for file in files:
     p = os.path.join(dir_path, file)
     imagelist.append(p)
 
+
 try:
     with open(f"{file_name}.pdf", "wb") as f:
-        f.write(
-            img2pdf.convert(
-                [
-                    x
-                    for x in imagelist
-                    if x.endswith("png")
-                    or x.endswith("jpg")
-                    or x.endswith("jpeg")
-                    or x.endswith("tiff")
-                ]
-            )
-        )
+        imagelist = [
+            x
+            for x in imagelist
+            if x.endswith("png")
+            or x.endswith("jpg")
+            or x.endswith("jpeg")
+            or x.endswith("tiff")
+        ]
+        f.write(img2pdf.convert(imagelist))
 except Exception as e:
     print(e)
 
+print(f"{len(imagelist)} images converted")
