@@ -28,7 +28,11 @@ if file_name == "":
 dir_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
 files = os.listdir(dir_path)
 # order files by number:
-files = sorted(files, key=lambda x: int(x.split(".png")[0]))
+# order files by number:
+try:
+    files = sorted(files, key=lambda x: int(x.split(".png")[0]))
+except:
+    files = sorted(files)
 
 
 imagelist = []
